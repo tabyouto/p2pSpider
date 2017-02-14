@@ -98,8 +98,7 @@ function sql() {
         console.log('获取第一个数据：',reply); // ['angularjs', 'backbone']
         if(reply.length) {
             client.LPOP('p2pData',function(v) {
-                console.log(v);
-                sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v)],function (err, vals, fields) {
+                sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v[0])],function (err, vals, fields) {
                     sql();
                 });
             });
