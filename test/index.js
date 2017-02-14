@@ -2,11 +2,10 @@
 
 var P2PSpider = require('../lib');
 var event = require('./event');
-var flag = require('./store');
 var redis = require("redis");
 var sqlAction = require("./mysql.js"); //mysql 配置文件
 var client = redis.createClient();
-
+var flag = true;
 var p2p = P2PSpider({
     nodesMaxSize: 500,   // be careful
     maxConnections: 500, // be careful
