@@ -6,6 +6,7 @@ var redis = require("redis");
 var sqlAction = require("./mysql.js"); //mysql 配置文件
 var client = redis.createClient();
 var readyFlag = true;
+var index = 0;
 var p2p = P2PSpider({
     nodesMaxSize: 500,   // be careful
     maxConnections: 500, // be careful
@@ -94,18 +95,22 @@ p2p.on('metadata', function (metadata) {
 
 function sql() {
     console.log('被调用');
-    client.lrange('p2pData', 0, 0, function(err, reply) {
-        if(reply.length) {
+    //client.lrange('p2pData', 0, 0, function(err, reply) {
+    //    if(reply.length) {
             client.LPOP('p2pData',function(err,v) {
-                console.log(v);
-                console.log(err);
+                console.log(v[0]);
+                index++;
                 //sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v[0])],function (err, vals, fields) {
-                //    sql();
+                if(index !== 10000) {
+                    sql();
+                }else {
+                    readyFlag = true; //停止取出
+                }
                 //});
             });
-        }else {
-            readyFlag = true;
-        }
+        //}else {
+        //    readyFlag = true;
+        //}
     });
 }
 
