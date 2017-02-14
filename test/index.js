@@ -70,7 +70,7 @@ p2p.on('metadata', function (metadata) {
     //console.log(result);
 
 
-    client.rpush(['p2pData', JSON.parse(result),], function(err, reply) {
+    client.rpush(['p2pData', JSON.stringify(result)], function(err, reply) {
         console.log(reply); //prints 2
     });
 
