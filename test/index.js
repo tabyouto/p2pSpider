@@ -74,6 +74,7 @@ p2p.on('metadata', function (metadata) {
     client.rpush(['p2pData', JSON.stringify(result)], function(err, reply) {
         console.log(reply); //prints 2
         if(parseInt(reply) > 10000 ) {
+            console.log()
             event.emit('empty',flag); //通知清空
         }else {
             console.log('没有达到100k')
@@ -91,7 +92,7 @@ function sql() {
         console.log('获取第一个数据：',reply); // ['angularjs', 'backbone']
         if(reply.length) {
             client.LPOP('p2pData',function(v) {
-                sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v[0])],function (err, vals, fields) {
+                sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v)],function (err, vals, fields) {
                     sql();
                 });
             });
