@@ -102,7 +102,7 @@ function sql() {
                 if(v) {
                     index++;
                     sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v)],function (err, vals, fields) {
-                        if(index !== 100) {
+                        if(index != 100) {
                             sql();
                         }else {
                             index = 0;
