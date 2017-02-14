@@ -111,7 +111,7 @@ function sql() {
         //}else {
         //    readyFlag = true;
         //}
-    });
+    //});
 }
 
 
