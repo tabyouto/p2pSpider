@@ -37,7 +37,7 @@ var sqlAction = {
                      console.log(vals);
                      var _res = JSON.parse(JSON.stringify(vals));
                     console.log(_res);
-                     //callback(qerr,_res, fields);
+                     callback(qerr,_res, fields);
                 });
             }
         })
