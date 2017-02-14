@@ -99,8 +99,8 @@ function sql() {
             client.LPOP('p2pData',function(v) {
                 console.log(v);
                 //sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v[0])],function (err, vals, fields) {
-                    sql();
-                });
+                //    sql();
+                //});
             });
         }else {
             readyFlag = true;
