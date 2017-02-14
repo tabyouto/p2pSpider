@@ -101,11 +101,11 @@ p2p.on('metadata', function (metadata) {
 
 
 
-    //sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[result],function (err, vals, fields) {});
 
 });
 
 sub.on('message',function(channel,data) {
+    sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[data],function (err, vals, fields) {});
     console.log('收到结果',channel,data);
 });
 
