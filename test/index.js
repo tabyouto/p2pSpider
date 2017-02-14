@@ -3,9 +3,9 @@
 var P2PSpider = require('../lib');
 var sqlAction = require("./mysql.js"); //mysql 配置文件
 
-//var redis = require("redis");
-//var sub = redis.createClient({password: 123456}),
-//    pub = redis.createClient({password: 123456});
+var redis = require("redis");
+var sub = redis.createClient({password: 123456}),
+    pub = redis.createClient({password: 123456});
 
 var p2p = P2PSpider({
     nodesMaxSize: 500,   // be careful
@@ -23,28 +23,13 @@ p2p.on('metadata', function (metadata) {
     var file_number = 1;
     var result = [];
     var tmpArr = [];
-    var tmpObj = {
-        a: '',
-        b: '',
-        c: '',
-        d: '',
-        e: '',
-        f: '',
-        g: '',
-        h: '',
-        i: ''
-    };
     if(metadata.info.name) {
         tmpArr.push(metadata.info.name.toString());
-        tmpObj.a = metadata.info.name.toString();
-        tmpObj.b = metadata.magnet;
-        tmpObj.c = metadata.infohash;
     }else {
         return;
     }
     tmpArr.push(metadata.magnet);
     tmpArr.push(metadata.infohash);
-
     if(metadata.info.files) {
         var ignoreCount = 0;
         var listFileSize = 0;
@@ -59,49 +44,66 @@ p2p.on('metadata', function (metadata) {
                 listFileSize += parseInt(metadata.info.files[i].length);
             }
             if(!flag && text.length <=20) {
+                // console.log(metadata.info.files[i])
                 text.push(metadata.info.files[i].path.toString());
                 flag = false;
             }
         }
-        console.log('原始数量',metadata.info.files.length);
+         console.log('原始数量',metadata.info.files.length);
         file_number = metadata.info.files.length - ignoreCount;
+        // console.log('结果',metadata.info.files.length - ignoreCount,'--------------------------------')
+        // console.log('文件大小',listFileSize,'+++++++++++++++++++++++++++++++')
         tmpArr.push(listFileSize);
-        tmpObj.d = listFileSize;
     }else {
         tmpArr.push(metadata.info.length);
-        tmpObj.d = metadata.info.length;
     }
 
     tmpArr.push(new Date().getTime());
     tmpArr.push(0);
     tmpArr.push(0);
     tmpArr.push(file_number);
-
-
-    tmpObj.e = new Date().getTime();
-    tmpObj.f = 0;
-    tmpObj.g = 0;
-    tmpObj.h = file_number;
     if(text) {
         tmpArr.push(text.join(','));
-        tmpObj.i = text.join(',');
     }else {
         tmpArr.push('');
-        tmpObj.i = '';
     }
-    var ccc = [];
-    var kkk = [];
-    for(var k in tmpObj) {
-        ccc.push(tmpObj[k]);
-    }
-    kkk.push(ccc);
-    //result.push(tmpArr);
-    console.log(kkk);
+    result.push(tmpArr);
+    console.log(result);
 
 
 
 
-    sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[kkk],function (err, vals, fields) {});
+    //pub.publish('getBt',JSON.stringify(result));
+    //sub.on('message',function(channel,data) {
+    //   console.log(channel,data);
+    //});
+    //sub.subscribe('getBt');
+
+
+    var msg_count = 0;
+
+    sub.on("subscribe", function (channel, count) {
+        pub.publish("a nice channel", "I am sending a message.");
+        pub.publish("a nice channel", "I am sending a second message.");
+        pub.publish("a nice channel", "I am sending my last message.");
+    });
+
+    sub.on("message", function (channel, message) {
+        console.log("sub channel " + channel + ": " + message);
+        msg_count += 1;
+        if (msg_count === 3) {
+            sub.unsubscribe();
+            sub.quit();
+            pub.quit();
+        }
+    });
+
+    sub.subscribe("a nice channel");
+
+
+
+
+    sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[result],function (err, vals, fields) {});
 
 });
 
