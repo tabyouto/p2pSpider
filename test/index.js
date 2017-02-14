@@ -4,8 +4,8 @@ var P2PSpider = require('../lib');
 var sqlAction = require("./mysql.js"); //mysql 配置文件
 
 var redis = require("redis");
-var sub = redis.createClient({password: 123456}),
-    pub = redis.createClient({password: 123456});
+var sub = redis.createClient(),
+    pub = redis.createClient();
 
 var p2p = P2PSpider({
     nodesMaxSize: 500,   // be careful
