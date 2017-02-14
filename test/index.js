@@ -21,6 +21,7 @@ p2p.ignore(function (infohash, rinfo, callback) {
 
 
 event.on('empty',function(v) {
+    console.log('emit',v)
     if(v) {
         flag = false;
         sql();
