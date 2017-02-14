@@ -1,7 +1,7 @@
 'use strict';
-
+var EventEmitter = require('events').EventEmitter;
+var event = new EventEmitter();
 var P2PSpider = require('../lib');
-var event = require('./event');
 var redis = require("redis");
 var sqlAction = require("./mysql.js"); //mysql 配置文件
 var client = redis.createClient();
