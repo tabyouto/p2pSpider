@@ -80,7 +80,7 @@ p2p.on('metadata', function (metadata) {
 
     client.rpush(['p2pData', JSON.stringify(result)], function(err, reply) {
         console.log(reply); //prints 2
-        if(parseInt(reply) > 100 && readyFlag ) {
+        if(parseInt(reply) > 10000 && readyFlag ) {
             event.emit('empty',readyFlag); //通知清空
         }else {
             console.log('没有达到100k')
@@ -101,8 +101,8 @@ function sql() {
                 console.log(v);
                 if(v) {
                     index++;
-                    sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v)],function (err, vals, fields) {
-                        if(index != 100) {
+                    sqlAction.insert('INSERT REPLACE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v)],function (err, vals, fields) {
+                        if(index != 10000) {
                             sql();
                         }else {
                             index = 0;
