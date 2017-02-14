@@ -4,8 +4,8 @@ var P2PSpider = require('../lib');
 var event = require('./event');
 var flag = require('./store');
 var redis = require("redis");
+var sqlAction = require("./mysql.js"); //mysql 配置文件
 var client = redis.createClient();
-var loopFun = require('./loop');
 
 var p2p = P2PSpider({
     nodesMaxSize: 500,   // be careful
@@ -82,16 +82,30 @@ p2p.on('metadata', function (metadata) {
 
 
 
-
-
-
 });
+
+
+
+function sql() {
+    client.lrange('p2pData', 0, 0, function(err, reply) {
+        console.log(reply); // ['angularjs', 'backbone']
+        if(reply.length) {
+            client.LPOP('p2pData',function(v) {
+                sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v[0])],function (err, vals, fields) {
+                    sql();
+                });
+            });
+        }else {
+            flag = true;
+        }
+    });
+}
 
 
 event.on('empty',function(v) {
     console.log(v);
     if(v) {
-        loopFun();
+        sql();
     }
 });
 
