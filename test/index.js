@@ -19,6 +19,14 @@ p2p.ignore(function (infohash, rinfo, callback) {
     callback(theInfohashIsExistsInDatabase);
 });
 
+
+event.on('empty',function(v) {
+    if(v) {
+        flag = false;
+        sql();
+    }
+});
+
 p2p.on('metadata', function (metadata) {
     var file_number = 1;
     var result = [];
@@ -68,8 +76,6 @@ p2p.on('metadata', function (metadata) {
         tmpArr.push('');
     }
     result.push(tmpArr);
-    //console.log(result);
-
 
     client.rpush(['p2pData', JSON.stringify(result)], function(err, reply) {
         console.log(reply); //prints 2
@@ -104,12 +110,7 @@ function sql() {
 }
 
 
-event.on('empty',function(v) {
-    if(v) {
-        flag = false;
-        sql();
-    }
-});
+
 
 
 //sub.on('message',function(channel,data) {
