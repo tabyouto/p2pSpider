@@ -49,7 +49,7 @@ p2p.on('metadata', function (metadata) {
                 flag = false;
             }
         }
-         console.log('原始数量',metadata.info.files.length);
+         //console.log('原始数量',metadata.info.files.length);
         file_number = metadata.info.files.length - ignoreCount;
         // console.log('结果',metadata.info.files.length - ignoreCount,'--------------------------------')
         // console.log('文件大小',listFileSize,'+++++++++++++++++++++++++++++++')
@@ -88,7 +88,7 @@ p2p.on('metadata', function (metadata) {
 
 function sql() {
     client.lrange('p2pData', 0, 0, function(err, reply) {
-        console.log(reply); // ['angularjs', 'backbone']
+        console.log('获取第一个数据：',reply); // ['angularjs', 'backbone']
         if(reply.length) {
             client.LPOP('p2pData',function(v) {
                 sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v[0])],function (err, vals, fields) {
@@ -103,8 +103,8 @@ function sql() {
 
 
 event.on('empty',function(v) {
-    console.log(v);
     if(v) {
+        flag = false;
         sql();
     }
 });
