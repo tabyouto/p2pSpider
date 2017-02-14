@@ -98,15 +98,21 @@ function sql() {
     //client.lrange('p2pData', 0, 0, function(err, reply) {
     //    if(reply.length) {
             client.LPOP('p2pData',function(err,v) {
-                index++;
-                sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v)],function (err, vals, fields) {
-                    if(index !== 100) {
-                        sql();
-                    }else {
-                        index = 0;
-                        readyFlag = true; //停止取出
-                    }
-                });
+                console.log(v);
+                if(v) {
+                    index++;
+                    sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v)],function (err, vals, fields) {
+                        if(index !== 100) {
+                            sql();
+                        }else {
+                            index = 0;
+                            readyFlag = true; //停止取出
+                        }
+                    });
+                }else {
+                    index = 0;
+                    readyFlag = true; //停止取出
+                }
             });
         //}else {
         //    readyFlag = true;
