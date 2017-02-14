@@ -80,7 +80,7 @@ p2p.on('metadata', function (metadata) {
 
     client.rpush(['p2pData', JSON.stringify(result)], function(err, reply) {
         console.log(reply); //prints 2
-        if(parseInt(reply) > 10000 ) {
+        if(parseInt(reply) > 10000 && flag ) {
             event.emit('empty',flag); //通知清空
         }else {
             console.log('没有达到100k')
