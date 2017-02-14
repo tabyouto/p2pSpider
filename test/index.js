@@ -5,7 +5,7 @@ var P2PSpider = require('../lib');
 var redis = require("redis");
 var sqlAction = require("./mysql.js"); //mysql 配置文件
 var client = redis.createClient();
-var flag = true;
+var readyFlag = true;
 var p2p = P2PSpider({
     nodesMaxSize: 500,   // be careful
     maxConnections: 500, // be careful
@@ -22,7 +22,7 @@ p2p.ignore(function (infohash, rinfo, callback) {
 event.on('empty',function(v) {
     console.log('emit',v)
     if(v) {
-        flag = false;
+        readyFlag = false;
         sql();
     }
 });
@@ -79,8 +79,8 @@ p2p.on('metadata', function (metadata) {
 
     client.rpush(['p2pData', JSON.stringify(result)], function(err, reply) {
         console.log(reply); //prints 2
-        if(parseInt(reply) > 10000 && flag ) {
-            event.emit('empty',flag); //通知清空
+        if(parseInt(reply) > 10000 && readyFlag ) {
+            event.emit('empty',readyFlag); //通知清空
         }else {
             console.log('没有达到100k')
         }
@@ -104,7 +104,7 @@ function sql() {
                 });
             });
         }else {
-            flag = true;
+            readyFlag = true;
         }
     });
 }
