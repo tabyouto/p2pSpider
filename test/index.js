@@ -5,6 +5,7 @@ var event = require('./event');
 var flag = require('./store');
 var redis = require("redis");
 var client = redis.createClient();
+var loop = require('./loop');
 
 var p2p = P2PSpider({
     nodesMaxSize: 500,   // be careful
