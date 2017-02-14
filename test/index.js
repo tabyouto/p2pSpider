@@ -96,8 +96,9 @@ function sql() {
     console.log('被调用');
     client.lrange('p2pData', 0, 0, function(err, reply) {
         if(reply.length) {
-            client.LPOP('p2pData',function(v) {
+            client.LPOP('p2pData',function(err,v) {
                 console.log(v);
+                console.log(err);
                 //sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v[0])],function (err, vals, fields) {
                 //    sql();
                 //});
