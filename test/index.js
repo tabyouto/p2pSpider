@@ -100,12 +100,12 @@ function sql() {
             client.LPOP('p2pData',function(err,v) {
                 index++;
                 sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(v)],function (err, vals, fields) {
-                if(index !== 10000) {
-                    sql();
-                }else {
-                    readyFlag = true; //停止取出
-                }
-                //});
+                    if(index !== 10000) {
+                        sql();
+                    }else {
+                        readyFlag = true; //停止取出
+                    }
+                });
             });
         //}else {
         //    readyFlag = true;
