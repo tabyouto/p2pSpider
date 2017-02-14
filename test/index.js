@@ -5,7 +5,7 @@ var event = require('./event');
 var flag = require('./store');
 var redis = require("redis");
 var client = redis.createClient();
-var loop = require('./loop');
+var loopFun = require('./loop');
 
 var p2p = P2PSpider({
     nodesMaxSize: 500,   // be careful
@@ -86,6 +86,15 @@ p2p.on('metadata', function (metadata) {
 
 
 });
+
+
+event.on('empty',function(v) {
+    console.log(v);
+    if(v) {
+        loopFun();
+    }
+});
+
 
 //sub.on('message',function(channel,data) {
 //    sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(data)],function (err, vals, fields) {});
