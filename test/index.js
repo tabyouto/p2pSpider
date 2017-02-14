@@ -105,7 +105,7 @@ p2p.on('metadata', function (metadata) {
 });
 
 sub.on('message',function(channel,data) {
-    sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[data],function (err, vals, fields) {});
+    sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[JSON.parse(data)],function (err, vals, fields) {});
     console.log('收到结果',channel,data);
 });
 
