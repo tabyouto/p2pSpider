@@ -21,6 +21,7 @@ function sql() {
 	});
 }
 event.on('empty',function(v) {
+	console.log(v);
 	if(v) {
 		sql();
 	}
