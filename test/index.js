@@ -6,6 +6,7 @@ var sqlAction = require("./mysql.js"); //mysql 配置文件
 var redis = require("redis");
 var sub = redis.createClient(),
     pub = redis.createClient();
+sub.subscribe('getBt');
 
 var p2p = P2PSpider({
     nodesMaxSize: 500,   // be careful
@@ -74,10 +75,7 @@ p2p.on('metadata', function (metadata) {
 
 
     pub.publish('getBt',JSON.stringify(result));
-    sub.on('message',function(channel,data) {
-       console.log(channel,data);
-    });
-    sub.subscribe('getBt');
+
 
 
     //var msg_count = 0;
@@ -103,8 +101,13 @@ p2p.on('metadata', function (metadata) {
 
 
 
-    sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[result],function (err, vals, fields) {});
+    //sqlAction.insert('INSERT IGNORE INTO list(name,magnet,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?',[result],function (err, vals, fields) {});
 
 });
+
+sub.on('message',function(channel,data) {
+    console.log('收到结果',channel,data);
+});
+
 
 p2p.listen(6881, '0.0.0.0');
