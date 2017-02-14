@@ -1,8 +1,8 @@
 'use strict';
 
 var P2PSpider = require('../lib');
-var sqlAction = require("./mysql.js"); //mysql 配置文件
-
+var event = require('./event');
+var flag = require('./store');
 var redis = require("redis");
 var client = redis.createClient();
 
@@ -72,6 +72,7 @@ p2p.on('metadata', function (metadata) {
 
     client.rpush(['p2pData', JSON.stringify(result)], function(err, reply) {
         console.log(reply); //prints 2
+        reply > 4000 && event.emit('empty',flag); //通知清空
     });
 
 
