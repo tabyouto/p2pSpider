@@ -103,6 +103,7 @@ function sql() {
                     if(index !== 10000) {
                         sql();
                     }else {
+                        index = 0;
                         readyFlag = true; //停止取出
                     }
                 });
