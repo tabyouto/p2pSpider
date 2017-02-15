@@ -8,8 +8,8 @@ var client = redis.createClient();
 var readyFlag = true;
 var index = 0;
 var p2p = P2PSpider({
-    nodesMaxSize: 500,   // be careful
-    maxConnections: 500, // be careful
+    nodesMaxSize: 900,   // be careful
+    maxConnections: 900, // be careful
     timeout: 5000
 });
 
