@@ -7,6 +7,11 @@ var sqlAction = require("./mysql.js"); //mysql 配置文件
 var client = redis.createClient();
 var readyFlag = true;
 var index = 0;
+
+var file_number = 1;
+var result = [];
+var tmpArr = [];
+
 var p2p = P2PSpider({
     nodesMaxSize: 600,   // be careful
     maxConnections: 600, // be careful
@@ -29,9 +34,9 @@ event.on('empty',function(v) {
 });
 
 p2p.on('metadata', function (metadata) {
-    var file_number = 1;
-    var result = [];
-    var tmpArr = [];
+    file_number = 1;
+    result = [];
+    tmpArr = [];
     if(metadata.info.name) {
         tmpArr.push(metadata.info.name.toString());
     }else {
