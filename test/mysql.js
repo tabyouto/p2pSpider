@@ -1,13 +1,9 @@
 'use strict';
 
 var mysql = require('mysql');
-var pool = mysql.createPool({  
-                host: 'localhost',
-                user: 'root',  
-                password: 'kjshd^%&930GH',
-                database: 'btDB',
-                port: '3306'  
-            });
+var config = require('./config');
+console.log(config)
+var pool = mysql.createPool(config);
 
 
 
