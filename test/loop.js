@@ -1,11 +1,11 @@
 'use strict';
 
-var sqlAction = require("./mysql.js"); //mysql 配置文件
-var redis = require("redis");
-var flag= require('./store');
-var event = require('./event');
-var client = redis.createClient();
-var i = 0;
+let sqlAction = require("./mysql.js"); //mysql 配置文件
+let redis = require("redis");
+let flag= require('./store');
+let event = require('./event');
+let client = redis.createClient();
+let i = 0;
 function sql() {
 	client.lrange('p2pData', 0, 0, function(err, reply) {
 		console.log(reply); // ['angularjs', 'backbone']

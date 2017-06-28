@@ -1,13 +1,14 @@
 'use strict';
 
-var mysql = require('mysql');
-var config = require('./config');
+let mysql = require('mysql');
+let config = require('./config');
 console.log(config)
-var pool = mysql.createPool(config);
+let pool = mysql.createPool(config);
+
+console.log(pool)
 
 
-
-var sqlAction = {
+let sqlAction = {
     query: function (sql, x, callback) {
         pool.getConnection(function (err, conn) {
             if (err) {
@@ -17,7 +18,7 @@ var sqlAction = {
                     //释放连接
                     conn.release();
                     //事件驱动回调
-                    var _res = JSON.parse(JSON.stringify(vals));
+                    let _res = JSON.parse(JSON.stringify(vals));
                     callback(qerr, _res, fields);
                 });
             }
@@ -31,7 +32,7 @@ var sqlAction = {
                 conn.query(sql, x, function (qerr, vals, fields) {
                     conn.release();
                     console.log(vals);
-                    // var _res = JSON.parse(JSON.stringify(vals));
+                    // let _res = JSON.parse(JSON.stringify(vals));
                     //console.log(_res);
                      callback(qerr, fields);
                 });
