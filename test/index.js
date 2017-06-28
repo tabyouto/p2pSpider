@@ -1,19 +1,19 @@
 'use strict';
-let EventEmitter = require('events').EventEmitter;
-let event = new EventEmitter();
-let P2PSpider = require('../lib');
-let redis = require("redis");
-let sqlAction = require("./mysql.js"); //mysql 配置文件
-let client = redis.createClient();
-let readyFlag = true;
-let index = 0;
-//let heapdump = require('heapdump')
+var EventEmitter = require('events').EventEmitter;
+var event = new EventEmitter();
+var P2PSpider = require('../lib');
+var redis = require("redis");
+var sqlAction = require("./mysql.js"); //mysql 配置文件
+var client = redis.createClient();
+var readyFlag = true;
+var index = 0;
+//var heapdump = require('heapdump')
 //heapdump.writeSnapshot()
-let file_number = 1;
-let result = [];
-let tmpArr = [];
+var file_number = 1;
+var result = [];
+var tmpArr = [];
 
-let p2p = P2PSpider({
+var p2p = P2PSpider({
 	nodesMaxSize: 600,   // be careful
 	maxConnections: 600, // be careful
 	timeout: 5000
@@ -21,7 +21,7 @@ let p2p = P2PSpider({
 
 p2p.ignore(function (infohash, rinfo, callback) {
 	// false => always to download the metadata even though the metadata is exists.
-	let theInfohashIsExistsInDatabase = false;
+	var theInfohashIsExistsInDatabase = false;
 	callback(theInfohashIsExistsInDatabase);
 });
 
@@ -46,12 +46,12 @@ p2p.on('metadata', function (metadata) {
 	tmpArr.push(metadata.magnet);
 	tmpArr.push(metadata.infohash);
 	if (metadata.info.files) {
-		let ignoreCount = 0;
-		let listFileSize = 0;
-		let flag = false; //判断是不是无效文件
-		let text = []; //多个文件名
+		var ignoreCount = 0;
+		var listFileSize = 0;
+		var flag = false; //判断是不是无效文件
+		var text = []; //多个文件名
 		for (let i = 0; i < metadata.info.files.length; i++) {
-			let path_name = metadata.info.files[i].path ? metadata.info.files[i].path.toString() : '';
+			var path_name = metadata.info.files[i].path ? metadata.info.files[i].path.toString() : '';
 			if (path_name.indexOf('_____padding_file') > -1) {
 				ignoreCount++;
 				flag = true;
