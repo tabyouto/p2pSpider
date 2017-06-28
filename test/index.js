@@ -104,7 +104,7 @@ function sql() {
 		if (v) {
 			index++;
 			sqlAction.insert('INSERT IGNORE INTO list(name,infoHash,size,catch_date,hot,download_count,file_number,content_file) VALUES ?', [JSON.parse(v)], function (err, vals, fields) {
-				if (error) throw error;
+				if (err) throw err;
 				if (index != 5000) {
 					sql();
 				} else {
