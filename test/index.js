@@ -7,7 +7,8 @@ var sqlAction = require("./mysql.js"); //mysql 配置文件
 var client = redis.createClient();
 var readyFlag = true;
 var index = 0;
-
+//var heapdump = require('heapdump')
+//heapdump.writeSnapshot()
 var file_number = 1;
 var result = [];
 var tmpArr = [];
