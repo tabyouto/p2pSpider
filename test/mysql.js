@@ -30,7 +30,7 @@ var sqlAction = {
             } else {
                 conn.query(sql, x, function (qerr, vals, fields) {
                     conn.release();
-                    // console.log(vals);
+                    console.log(vals);
                     // var _res = JSON.parse(JSON.stringify(vals));
                     //console.log(_res);
                      callback(qerr, fields);
